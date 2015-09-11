@@ -1,13 +1,18 @@
-function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResults) 
-{
-    $sqlQueryText = "INSERT INTO policy.PolicyHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES (N'$EvaluatedServer', N'$EvaluatedPolicy', N'$EvaluationResults')"
-    try
-	{
-		Invoke-Sqlcmd -ServerInstance $sqlServerVariable -Database $sqlDatabaseVariable -Query $sqlQueryText -QueryTimeout 65535 -ErrorAction Stop
-	}
-	catch
-	{
-	    $ExceptionText = $_.Exception.Message -replace "'", ""
-		return $ExceptionText
+function PolicyHistoryInsert {
+    [CmdletBinding()]
+    param (
+        $sqlServerVariable, 
+        $sqlDatabaseVariable, 
+        $EvaluatedServer, 
+        $EvaluatedPolicy, 
+        $EvaluationResults
+    )
+
+    $sqlQueryText = "INSERT INTO policy.PolicyHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES(@p0, @p1, @p2)"
+    try {
+        New-SqlConnectionString $sqlServerVariable $sqlDatabaseVariable | 
+        New-SqlCommand $sqlQueryText `@p0 $EvaluatedServer `@p1 $EvaluatedPolicy `@p2 $EvaluationResultsEscape -QueryTimeout  65535
+    } catch {
+	    $_.Exception.Message
 	}
 }

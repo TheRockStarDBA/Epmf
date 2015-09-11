@@ -1,6 +1,9 @@
-# Function to load assemblies and Snapins - http://msdn.microsoft.com/en-us/library/hh245202.aspx
-function LoadAssemblies()
-{
+function LoadAssemblies {
+    [CmdletBinding()]
+    param (
+        $CentralManagementServer
+    )
+
 	$Error.Clear()
 	$assemblylist = "Microsoft.SqlServer.Smo", "Microsoft.SqlServer.SmoExtended", "Microsoft.SqlServer.Dmf", "Microsoft.SqlServer.Facets", "Microsoft.SqlServer.Management.RegisteredServers", "Microsoft.SqlServer.Management.Sdk.Sfc", "Microsoft.SqlServer.Management.Collector", "Microsoft.SqlServer.Management.CollectorEnum"
 

@@ -1,5 +1,9 @@
-function PolicyFileDelete($File) 
-{
+function PolicyFileDelete {
+    [CmdletBinding()]
+    param (
+        $File
+    )
+
 	# Delete evaluation files in the directory.
 	try
 	{
@@ -7,8 +11,6 @@ function PolicyFileDelete($File)
 	}
 	catch 
 	{
-	    $ExceptionText = $_.Exception.Message -replace "'", ""
-		return $ExceptionText
-		continue
+	    $_.Exception.Message
 	}
 }

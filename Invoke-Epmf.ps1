@@ -1,30 +1,17 @@
 ﻿function Invoke-Epmf {
     [CmdletBinding()]
     param (
-        [string]$ConfigurationGroup=$(Throw "Parameter missing: -ConfigurationGroup ConfigGroup"),
-        [string]$PolicyCategoryFilter=$(Throw "Parameter missing: -PolicyCategoryFilter Category"),
-        [string]$EvalMode=$(Throw "Parameter missing: -EvalMode EvalMode")
+        [Parameter(Mandatory = $true)]
+        [string] $ConfigurationGroup, # Group to evaluate
+        [Parameter(Mandatory = $true)]
+        [string] $PolicyCategoryFilter, # Policies to evaluate
+        [Parameter(Mandatory = $true)]
+        [string] $EvalMode, # Check or Configure
+
+        [string] $CentralManagementServer = "SQL2012",
+        [string] $HistoryDatabase = "MDW",
+        [string] $ResultDir = "D:\Results\"
     )
-
-    # Parameter -ConfigurationGroup specifies the 
-    # Central Management Server group to evaluate
-    # Parameter -PolicyCategoryFilter specifies the 
-    # category of policies to evaluate
-    # Parameter -EvalMode accepts "Check" to report policy
-    # results, "Configure" to reconfigure any violations 
-
-    # Declare variables to define the central warehouse
-    # in which to write the output, store the policies
-    $CentralManagementServer = "SQL2012"
-    $HistoryDatabase = "MDW"
-    # Define the location to write the results of the policy evaluation
-    $ResultDir = "D:\Results\"
-    # End of variables
-
-
-    # Function to load module
-
-    #Function to delete files from this policy only
 
     if ($host.Name -eq "ConsoleHost")
     {
@@ -33,7 +20,7 @@
     }
 
     # Load Assemblies
-    LoadAssemblies
+    LoadAssemblies $CentralManagementServer 
     LoadModule -modname "SQLPS"
 
     if ($host.Name -eq "ConsoleHost")

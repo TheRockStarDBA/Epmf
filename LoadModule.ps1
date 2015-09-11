@@ -1,5 +1,9 @@
-function LoadModule($modname)
-{
+function LoadModule {
+    [CmdletBinding()]
+    param (
+        $modname
+    )
+
 	$Error.Clear()
 	if (-not(${env:programfiles(x86)})) 
     {
